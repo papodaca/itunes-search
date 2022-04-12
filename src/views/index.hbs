@@ -1,0 +1,19 @@
+<table>
+  <tr>
+    <td class="top">
+      <form action="" method="get">
+        <input type="search" name="query" id="query"{{#if query}} value="{{query}}"{{/if}}>
+        <input type="submit" value="Go!">
+      </form>
+    </td>
+  </tr>
+  <tr>
+    <td class="bottom">
+      <uL>
+      {{#each items}}
+        <li><span class="title">{{title}}</span><a href="{{url}}">{{url}}</a></li>
+      {{/each}}
+      </uL>
+    </td>
+  </tr>
+</table>
