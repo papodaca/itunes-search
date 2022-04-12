@@ -9,6 +9,9 @@
     "@types/node-fetch": "^2.6.1",
     "typescript": "^4.6.3"
   },
+  "scripts": {
+    "start": "tsc && node dist/index.js"
+  },
   "dependencies": {
     "express": "^4.17.3",
     "foreman": "^3.0.1",
