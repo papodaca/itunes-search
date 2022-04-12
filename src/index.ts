@@ -1,10 +1,8 @@
 import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
 import fetch from 'node-fetch';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const apple_base = "https://itunes.apple.com/search?entity=podcast&term=";
 
 type FeedItem = {
@@ -23,7 +21,7 @@ type ItunesResponce = {
 
 async function run() {
   const app = express();
-  app.set('views', path.join(__dirname, 'views'));
+  app.set('views', path.resolve(path.join('.', 'src', 'views')));
   app.set('view engine', 'hbs');
 
   app.get("/", async (req, res) => {
