@@ -1,0 +1,21 @@
+{{- define "content"}}
+<table>
+    <tr>
+      <td class="top">
+        <form action="" method="get">
+          <input type="search" name="query" id="query"{{if .query}} value="{{.query}}"{{end}}>
+          <input type="submit" value="Go!">
+        </form>
+      </td>
+    </tr>
+    <tr>
+      <td class="bottom">
+        <uL>
+        {{- range .items}}
+          <li><span class="title">{{.collectionName}}</span>&nbsp;<a href="{{.feedUrl}}">{{.feedUrl}}</a></li>
+        {{- end}}
+        </uL>
+      </td>
+    </tr>
+  </table>
+{{- end}} 
