@@ -1,15 +1,12 @@
-FROM golang:1.19 as build
+FROM golang:1.23 AS build
 
-WORKDIR /usr/local/go/src/app
+WORKDIR /go/src/itunes-search
 COPY . .
 
-RUN go install github.com/GeertJohan/go.rice/rice@latest && \
-  go mod download && \
-  go generate && \
-  CGO_ENABLED=0 go build -o /go/bin/app
+RUN go install .
 
-FROM gcr.io/distroless/static-debian11
+FROM gcr.io/distroless/static-debian12
 
-COPY --from=build /go/bin/app /
+COPY --from=build /go/bin/* /
 ENV GIN_MODE=release
-ENTRYPOINT [ "/app" ]
+ENTRYPOINT [ "/itunes-search" ]

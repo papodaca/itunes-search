@@ -1,66 +1,15 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Search iTunes</title>
-    <style>
-      body {
-        color: #fff;
-        background-color: #000;
-        margin: 0;
-        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-      }
-      ul {
-        list-style: none;
-      }
-      td iframe {
-        border: 0;
-        width: 100%;
-        height: 100%;
-      }
-      a:visited, a:hover {
-        color: lightgray;
-      }
-      a {
-        color: white;
-      }
 
-      tr, td {
-        margin: 0;
-        border: 0;
-      }
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Search iTunes</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
 
-      td.top {
-        text-align: center;
-        height: 50px;
-      }
+<body>
+  {{template "content" .}}
+</body>
 
-      td.bottom {
-        height: 100%;
-      }
-
-      table {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        border-spacing: 0;
-      }
-
-      select {
-        border-color: #736b5e;
-        color: #e8e6e3;
-        background-color: #181a1b;
-      }
-
-      input[type="number"] {
-        border-color: #736b5e;
-        color: #e8e6e3;
-        background-color: #181a1b;
-      }
-    </style>
-  </head>
-  <body>
-    {{template "content" .}}
-  </body>
 </html>

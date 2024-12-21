@@ -1,31 +1,30 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
+	"io/fs"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 
-	rice "github.com/GeertJohan/go.rice"
 	"github.com/foolin/goview"
 	"github.com/foolin/goview/supports/ginview"
 	"github.com/gin-gonic/gin"
 )
 
-//go:generate rice embed-go
+//go:embed views
+var views embed.FS
 
-func BinDataRenderer() *ginview.ViewEngine {
-	viewEngine := goview.New(goview.DefaultConfig)
-	viewEngine.SetFileHandler(func(config goview.Config, tplFile string) (content string, err error) {
-		box := rice.MustFindBox("views")
-		file, err := box.String(tplFile + config.Extension)
-		if err != nil {
-			return "", err
-		}
-		return string(file), nil
-	})
-	return &ginview.ViewEngine{
-		ViewEngine: viewEngine}
+//go:embed static
+var static embed.FS
+
+func loadTemplate(config goview.Config, tplFile string) (string, error) {
+	file, err := views.ReadFile("views/" + tplFile + config.Extension)
+	if err != nil {
+		return "", err
+	}
+	return string(file), nil
 }
 
 const search_url = "https://itunes.apple.com/search"
@@ -81,14 +80,21 @@ func get_itunes_search(search_term string) []gin.H {
 func main() {
 	router := gin.Default()
 	router.SetTrustedProxies(nil)
-	router.HTMLRender = BinDataRenderer()
+	viewEngine := goview.New(goview.DefaultConfig)
+	viewEngine.SetFileHandler(loadTemplate)
+	router.HTMLRender = &ginview.ViewEngine{ViewEngine: viewEngine}
+	staticFs, err := fs.Sub(static, "static")
+	if err != nil {
+		panic(err)
+	}
+	router.StaticFS("/static", http.FS(staticFs))
 	router.GET("/", func(c *gin.Context) {
-		query := c.Query("query")
+		query := c.Query("q")
 		if len(query) > 0 {
 			items := get_itunes_search(query)
 			c.HTML(http.StatusOK, "index", gin.H{"query": query, "items": items})
 		} else {
-			c.HTML(http.StatusOK, "index", gin.H{})
+			c.HTML(http.StatusOK, "index", nil)
 		}
 
 	})
